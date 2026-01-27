@@ -10,9 +10,7 @@ module run2earn::event {
     // Error codes
     const E_INVALID_RUN_FEE: u64 = 100;
     const E_VAULT_MISMATCH: u64 = 200;
-    const E_ALREADY_CLAIMED: u64 = 201;
     const E_NO_SUBMISSION: u64 = 202;
-    const E_SUBMISSION_EVENT_MISMATCH: u64 = 203;
     const E_EVENT_FULL: u64 = 204;
     const E_ALREADY_JOINED: u64 = 205;
     const E_EVENT_NOT_STARTED: u64 = 206;
@@ -20,10 +18,8 @@ module run2earn::event {
     const E_EVENT_NOT_ENDED: u64 = 208;
     const E_NOT_CREATOR: u64 = 209;
     const E_ALREADY_VERIFIED: u64 = 210;
-    const E_NOT_APPROVED: u64 = 211;
     const E_REWARD_ALREADY_DISTRIBUTED: u64 = 212;
     const E_NO_APPROVED_PARTICIPANTS: u64 = 213;
-    const E_EVENT_STILL_RUNNING: u64 = 214;
 
     // Event status
     const STATUS_PENDING: u8 = 0;
@@ -261,22 +257,18 @@ module run2earn::event {
         // Claim all rewards from vault
         let mut total_reward = vault::claim_internal(vault, ctx);
         
-        // Distribute to each approved participant
+        // Distribute to each approved participant (except last)
         let mut i = 0;
-        while (i < num_approved) {
+        while (i < num_approved - 1) {
             let recipient = *vector::borrow(&event.approved_participants, i);
-            
-            if (i == num_approved - 1) {
-                // Last person gets remaining balance (handles rounding)
-                transfer::public_transfer(total_reward, recipient);
-                break
-            } else {
-                let share = coin::split(&mut total_reward, reward_per_person, ctx);
-                transfer::public_transfer(share, recipient);
-            };
-            
+            let share = coin::split(&mut total_reward, reward_per_person, ctx);
+            transfer::public_transfer(share, recipient);
             i = i + 1;
         };
+        
+        // Last person gets remaining balance (handles rounding)
+        let last_recipient = *vector::borrow(&event.approved_participants, num_approved - 1);
+        transfer::public_transfer(total_reward, last_recipient);
         
         event.reward_distributed = true;
     }
