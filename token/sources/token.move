@@ -1,4 +1,4 @@
-module token::run_token {
+module token::life_token {
     use sui::coin::{Self, TreasuryCap, Coin};
     use sui::sui::SUI;
     use sui::tx_context::TxContext;
@@ -13,7 +13,7 @@ module token::run_token {
     const E_NOT_ADMIN: u64 = 1;
     const E_INSUFFICIENT_SUI: u64 = 2;
 
-    public struct RUN_TOKEN has drop {}
+    public struct LIFE_TOKEN has drop {}
 
     public struct TokenState has key {
         id: UID,
@@ -22,27 +22,27 @@ module token::run_token {
 
     public struct PriceConfig has key {
         id: UID,
-        run_per_sui: u64
+        life_per_sui: u64
     }
 
-    public struct RunVault has key {
+    public struct LifeVault has key {
         id: UID,
-        treasury_cap: TreasuryCap<RUN_TOKEN>
+        treasury_cap: TreasuryCap<LIFE_TOKEN>
     }
 
     fun init(
-        otw: RUN_TOKEN,
+        otw: LIFE_TOKEN,
         ctx: &mut TxContext
     ) {
         let (mut treasury_cap, metadata) = sui::coin::create_currency(
             otw,
             9,
-            b"RUN",
-            b"Run Coin",
-            b"Run Coin for Run-to-Earn MVP",
+            b"LIFE",
+            b"Life Token",
+            b"Life Token for SuiLife Environment",
             option::some(
                 url::new_unsafe_from_bytes(
-                    b"https://img.freepik.com/premium-vector/cartoon-character-gold-coin-running-rush-hand-drawing-illustration-vector_772546-737.jpg"
+                    b"https://silver-permanent-goldfish-229.mypinata.cloud/ipfs/bafybeihenplgdzgsvyfc76f7pfglnm6ter34eoxnq2ntj5biddexjq6wk4"
                 )
             ),
             ctx
@@ -52,7 +52,7 @@ module token::run_token {
 
         let price = PriceConfig {
             id: object::new(ctx),
-            run_per_sui: 1_000
+            life_per_sui: 1_000
         };
 
         let mut state = TokenState {
@@ -69,7 +69,7 @@ module token::run_token {
         );
         state.total_supply = initial_supply;
 
-        let vault = RunVault {
+        let vault = LifeVault {
             id: object::new(ctx),
             treasury_cap
         };
@@ -79,16 +79,16 @@ module token::run_token {
         transfer::share_object(state);
     }
 
-    public entry fun buy_run(
-        vault: &mut RunVault,
+    public entry fun buy_life(
+        vault: &mut LifeVault,
         price: &PriceConfig,
-        amount_run: u64,
+        amount_life: u64,
         mut sui_coin: Coin<SUI>,
         state: &mut TokenState,
         ctx: &mut TxContext
     ) {
         let required_sui =
-            (amount_run + price.run_per_sui - 1) / price.run_per_sui;
+            (amount_life + price.life_per_sui - 1) / price.life_per_sui;
 
         let paid = coin::value(&sui_coin);
         assert!(paid >= required_sui, E_INSUFFICIENT_SUI);
@@ -102,17 +102,17 @@ module token::run_token {
 
         coin::mint_and_transfer(
             &mut vault.treasury_cap,
-            amount_run,
+            amount_life,
             sui::tx_context::sender(ctx),
             ctx
         );
 
-        state.total_supply = state.total_supply + amount_run;
+        state.total_supply = state.total_supply + amount_life;
     }
 
 
     public entry fun admin_mint(
-        vault: &mut RunVault,
+        vault: &mut LifeVault,
         state: &mut TokenState,
         amount: u64,
         recipient: address,
@@ -134,9 +134,9 @@ module token::run_token {
     }
 
     public entry fun admin_burn(
-        vault: &mut RunVault,
+        vault: &mut LifeVault,
         state: &mut TokenState,
-        coin_in: Coin<RUN_TOKEN>,
+        coin_in: Coin<LIFE_TOKEN>,
         ctx: &mut TxContext
     ) {
         assert!(

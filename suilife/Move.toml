@@ -1,5 +1,5 @@
 [package]
-name = "run2earn"
+name = "suilife"
 edition = "2024.beta" # edition = "legacy" to use legacy (pre-2024) Move
 # license = ""           # e.g., "MIT", "GPL", "Apache 2.0"
 # authors = ["..."]      # e.g., ["Joe Smith (joesmith@noemail.com)", "John Snow (johnsnow@noemail.com)"]
@@ -20,7 +20,7 @@ token = { local = "../token" }
 # Override = { local = "../conflicting/version", override = true }
 
 [addresses]
-run2earn = "0x0"
+suilife = "0x0"
 token = "0xf554be094beb4e0023dcde223ca00a540a5a21ec3ae25ac551e037377e4fad5f"
 
 # Named addresses will be accessible in Move as `@name`. They're also exported:
