@@ -3,7 +3,7 @@
 
 [move]
 version = 3
-manifest_digest = "4C795FD7E7585A03D1326F0922B3D116466692588C9705620A6275440C967CA2"
+manifest_digest = "8BB2150C52FAA19EFE2D696085C511B6C1CA35BA9B11322CBCC66D09865408B7"
 deps_digest = "3C4103934B1E040BB6B23F1D610B4EF9F2F1166A50A104EADCF77467C004C600"
 dependencies = [
   { id = "Sui", name = "Sui" },
@@ -22,12 +22,6 @@ dependencies = [
   { id = "MoveStdlib", name = "MoveStdlib" },
 ]
 
-[pinned.testnet.MoveStdlib]
-source = { git = "https://github.com/MystenLabs/sui.git", subdir = 'crates\sui-framework\packages\move-stdlib', rev = "d4a0c80be6020093592b305853832e7b80c5e2f2" }
-use_environment = "testnet"
-manifest_digest = "C4FE4C91DE74CBF223B2E380AE40F592177D21870DC2D7EB6227D2D694E05363"
-deps = {}
-
 [[move.package]]
 id = "token"
 source = { local = "..\\token" }
@@ -41,8 +35,14 @@ compiler-version = "1.62.0"
 edition = "2024.beta"
 flavor = "sui"
 
+[pinned.testnet.MoveStdlib]
+source = { git = "https://github.com/MystenLabs/sui.git", subdir = 'crates\sui-framework\packages\move-stdlib', rev = "5484a7e2b67cfc116cd235fa0b8e2b858058823b" }
+use_environment = "testnet"
+manifest_digest = "C4FE4C91DE74CBF223B2E380AE40F592177D21870DC2D7EB6227D2D694E05363"
+deps = {}
+
 [pinned.testnet.Sui]
-source = { git = "https://github.com/MystenLabs/sui.git", subdir = 'crates\sui-framework\packages\sui-framework', rev = "d4a0c80be6020093592b305853832e7b80c5e2f2" }
+source = { git = "https://github.com/MystenLabs/sui.git", subdir = 'crates\sui-framework\packages\sui-framework', rev = "5484a7e2b67cfc116cd235fa0b8e2b858058823b" }
 use_environment = "testnet"
 manifest_digest = "7AFB66695545775FBFBB2D3078ADFD084244D5002392E837FDE21D9EA1C6D01C"
 deps = { MoveStdlib = "MoveStdlib" }
@@ -63,6 +63,6 @@ deps = { Sui = "Sui" }
 
 [env.testnet]
 chain-id = "4c78adac"
-original-published-id = "0x3743b6e4b471ec0c878c3e9a243e3c97392ed0824402dd27f6084fd2ae558bc1"
-latest-published-id = "0x3743b6e4b471ec0c878c3e9a243e3c97392ed0824402dd27f6084fd2ae558bc1"
+original-published-id = "0xc85ffd81036b609af85cd07439a8ed01ccb6a3db6cd2f2012c29d4145dbab00d"
+latest-published-id = "0xc85ffd81036b609af85cd07439a8ed01ccb6a3db6cd2f2012c29d4145dbab00d"
 published-version = "1"

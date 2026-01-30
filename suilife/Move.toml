@@ -21,7 +21,7 @@ token = { local = "../token" }
 
 [addresses]
 suilife = "0x0"
-token = "0x2d1bd20b3021e396cdac5a92e7ab060bcc602dd828f10ec85ba9d6abf59b0e32"
+token = "0x69f585ff94a49807d1b385d7e05a08cc01f5622ade69fee17aa6d885b545b0a6"
 
 # Named addresses will be accessible in Move as `@name`. They're also exported:
 # for example, `std = "0x1"` is exported by the Standard Library.
